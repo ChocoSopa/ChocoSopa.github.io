@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kefi Studio – Velas Artesanales</title>
+  <!-- Fuente fantasía de Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+  <!-- fullPage.js para efecto diapositiva -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/4.0.20/fullpage.min.css">
   <style>
     body {
       margin: 0;
@@ -11,32 +15,27 @@
       background: linear-gradient(135deg, #f8e1f4 0%, #e3d6f7 100%);
       color: #7d4b94;
     }
-    header {
-      background: #f6cce9;
-      padding: 0;
-      box-shadow: 0 2px 8px rgba(125,75,148,0.05);
+    .logo {
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 3em;
+      letter-spacing: 3px;
+      color: #b67fe2;
+      text-shadow: 2px 2px 8px #f8e1f4;
+      margin-bottom: 10px;
     }
     .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      padding: 18px 40px;
+      gap: 30px;
+      background: rgba(246,204,233, 0.93);
+      z-index: 100;
+      padding: 10px 0;
+      box-shadow: 0 2px 8px rgba(125,75,148,0.05);
     }
-    .logo {
-      font-size: 2em;
-      font-weight: bold;
-      color: #b67fe2;
-      letter-spacing: 2px;
-    }
-    .menu {
-      display: flex;
-      gap: 24px;
-    }
-    .dropdown {
-      position: relative;
-      display: inline-block;
-    }
-    .dropbtn {
+    .nav-btn, .nav-dropdown {
       background: none;
       border: none;
       color: #7d4b94;
@@ -45,19 +44,24 @@
       cursor: pointer;
       border-radius: 6px;
       transition: background 0.2s;
+      font-family: inherit;
     }
-    .dropbtn:hover, .dropbtn:focus {
+    .nav-btn:hover, .nav-dropdown:hover {
       background: #e3d6f7;
     }
     .dropdown-content {
       display: none;
       position: absolute;
       background: #fff0fa;
-      min-width: 200px;
+      min-width: 220px;
       box-shadow: 0 4px 16px rgba(125,75,148,0.10);
-      z-index: 1;
+      z-index: 999;
       border-radius: 8px;
       margin-top: 2px;
+      left: 0;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
     }
     .dropdown-content a {
       color: #7d4b94;
@@ -71,16 +75,79 @@
     .dropdown-content a:hover {
       background: #f6cce9;
     }
-    .dropdown:hover .dropdown-content {
-      display: block;
+    /* Modal productos */
+    #productosModal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(200,170,220,0.25);
+      justify-content: center; align-items: center;
     }
-    main {
-      max-width: 1100px;
-      margin: 40px auto;
+    #productosModal .modal-content {
       background: #fff8fd;
-      padding: 36px 28px;
       border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(125,75,148,0.06);
+      max-width: 820px;
+      width: 95vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 24px rgba(125,75,148,0.11);
+      padding: 32px 24px;
+      position: relative;
+    }
+    #closeModal {
+      position: absolute; top: 12px; right: 18px;
+      font-size: 1.7em; color: #b67fe2;
+      background: none; border: none; cursor: pointer;
+    }
+    .productos-lista {
+      display: flex; flex-wrap: wrap; gap: 20px;
+      justify-content: center;
+    }
+    .producto-card {
+      background: #f6cce9;
+      border-radius: 12px;
+      width: 220px;
+      padding: 14px 10px;
+      box-shadow: 0 1px 6px rgba(183,127,226,0.07);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .producto-card img {
+      width: 90px; height: 90px; object-fit: cover;
+      border-radius: 8px; background: #fff;
+      margin-bottom: 8px; border: 2px solid #e3d6f7;
+    }
+    .precio {
+      color: #b67fe2;
+      font-weight: bold;
+      font-size: 1.05em;
+      margin-bottom: 5px;
+    }
+    .comprar-btn {
+      background: linear-gradient(90deg, #e3d6f7 0%, #f8e1f4 100%);
+      color: #7d4b94;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 18px;
+      font-size: 1em;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: background 0.2s;
+    }
+    .comprar-btn:hover {
+      background: #b67fe2;
+      color: #fff;
+    }
+    /* Secciones fullpage */
+    .section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding-top: 70px;
+      box-sizing: border-box;
     }
     h1, h2, h3 {
       color: #b67fe2;
@@ -89,223 +156,256 @@
     .about {
       background: #f8e1f4;
       border-radius: 12px;
-      padding: 26px 20px;
-      margin-bottom: 32px;
+      padding: 28px 20px;
+      margin-bottom: 18px;
       box-shadow: 0 1px 6px rgba(183,127,226,0.07);
-    }
-    .productos {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 28px;
-      justify-content: center;
-    }
-    .producto {
-      background: #f6cce9;
-      border-radius: 12px;
-      width: 260px;
-      padding: 18px 14px;
-      box-shadow: 0 1px 6px rgba(183,127,226,0.07);
+      max-width: 600px;
       text-align: center;
-      margin-bottom: 24px;
     }
-    .producto img {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 8px;
-      background: #fff;
-      margin-bottom: 12px;
-      border: 2px solid #e3d6f7;
+    .personalizacion-form {
+      background: #f8e1f4;
+      border-radius: 12px;
+      padding: 28px 22px;
+      box-shadow: 0 1px 6px rgba(183,127,226,0.07);
+      max-width: 440px;
+      margin: 0 auto;
     }
-    .precio {
-      color: #b67fe2;
+    .personalizacion-form label {
+      display: block;
+      margin-top: 12px;
+      margin-bottom: 4px;
       font-weight: bold;
-      font-size: 1.15em;
-      margin-bottom: 8px;
-    }
-    .comprar-btn {
-      background: linear-gradient(90deg, #e3d6f7 0%, #f8e1f4 100%);
       color: #7d4b94;
-      border: none;
+    }
+    .personalizacion-form select, .personalizacion-form input {
+      width: 100%;
+      padding: 7px;
       border-radius: 6px;
-      padding: 10px 22px;
+      border: 1px solid #e3d6f7;
+      margin-bottom: 8px;
       font-size: 1em;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: background 0.2s;
     }
-    .comprar-btn:hover {
-      background: #b67fe2;
-      color: #fff;
+    .personalizacion-form button {
+      width: 100%;
+      margin-top: 12px;
     }
-    @media (max-width: 800px) {
-      .productos {
-        flex-direction: column;
-        align-items: center;
-      }
-      .navbar {
-        flex-direction: column;
-        gap: 10px;
-      }
+    /* Responsive */
+    @media (max-width: 700px) {
+      .navbar { flex-direction: column; gap: 8px; }
+      .about, .personalizacion-form { padding: 14px 6px; }
+      #productosModal .modal-content { padding: 14px 6px; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <nav class="navbar">
+  <!-- Menú superior -->
+  <nav class="navbar">
+    <button class="nav-btn" onclick="fullpage_api.moveTo(1)">Inicio</button>
+    <button class="nav-btn" onclick="fullpage_api.moveTo(2)">Sobre nosotros</button>
+    <button class="nav-btn" onclick="fullpage_api.moveTo(3)">Personaliza tu vela</button>
+    <button class="nav-btn" onclick="fullpage_api.moveTo(4)">Contacto</button>
+    <div class="dropdown">
+      <button class="nav-dropdown">Productos</button>
+      <div class="dropdown-content">
+        <a href="#" onclick="abrirModal();return false;">Ver todos los productos</a>
+        <a href="#" onclick="fullpage_api.moveTo(3);return false;">Personalización</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Modal de productos -->
+  <div id="productosModal">
+    <div class="modal-content">
+      <button id="closeModal" title="Cerrar">&times;</button>
+      <h2>Catálogo de productos</h2>
+      <div>
+        <h3>Colección Marina</h3>
+        <div class="productos-lista">
+          <div class="producto-card">
+            <img src="URL_FOTO_ESTRELLA" alt="Estrella">
+            <div>Estrella</div>
+            <div class="precio">12,00 €</div>
+            <button class="comprar-btn">Comprar</button>
+          </div>
+          <div class="producto-card">
+            <img src="URL_FOTO_CARACOLA" alt="Caracola">
+            <div>Caracola</div>
+            <div class="precio">13,00 €</div>
+            <button class="comprar-btn">Comprar</button>
+          </div>
+          <div class="producto-card">
+            <img src="URL_FOTO_CONCHA" alt="Concha yeso">
+            <div>Concha yeso</div>
+            <div class="precio">11,00 €</div>
+            <button class="comprar-btn">Comprar</button>
+          </div>
+          <div class="producto-card">
+            <img src="URL_FOTO_CONCHA" alt="Concha">
+            <div>Concha</div>
+            <div class="precio">12,50 €</div>
+            <button class="comprar-btn">Comprar</button>
+          </div>
+        </div>
+        <h3>Colección Floral</h3>
+        <div class="productos-lista">
+          <div class="producto-card">
+            <img src="URL_FOTO_TARRO" alt="Tarro y flor">
+            <div>Tarro y flor</div>
+            <div class="precio">14,00 €</div>
+            <button class="comprar-btn">Comprar</button>
+          </div>
+          <div class="producto-card">
+            <img src="URL_FOTO_FLOR_GRANDE" alt="Flor Rosa">
+            <div>Flor Rosa</div>
+            <div class="precio">13,50 €</div>
+            <button class="comprar-btn">Comprar</button>
+          </div>
+          <div class="producto-card">
+            <img src="URL_FOTO_BOUQUET" alt="Bouquet flores">
+            <div>Bouquet flores</div>
+            <div class="precio">15,00 €</div>
+            <button class="comprar-btn">Comprar</button>
+          </div>
+          <div class="producto-card">
+            <img src="URL_FOTO_VASO_CRISTAL" alt="Vaso cristal y margarita">
+            <div>Vaso cristal y margarita</div>
+            <div class="precio">12,00 €</div>
+            <button class="comprar-btn">Comprar</button>
+          </div>
+          <div class="producto-card">
+            <img src="URL_FOTO_TULIPAN" alt="Tulipán">
+            <div>Tulipán</div>
+            <div class="precio">13,00 €</div>
+            <button class="comprar-btn">Comprar</button>
+          </div>
+        </div>
+        <!-- Puedes seguir agregando más colecciones y productos aquí -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Secciones fullpage -->
+  <div id="fullpage">
+    <!-- Portada -->
+    <div class="section" id="section0">
       <div class="logo">Kefi Studio</div>
-      <div class="menu">
-        <div class="dropdown">
-          <button class="dropbtn">Contacto</button>
-          <div class="dropdown-content">
-            <a href="#contacto">Formulario de contacto</a>
-            <a href="mailto:kefistudio@ejemplo.com">Email</a>
-          </div>
-        </div>
-        <div class="dropdown">
-          <button class="dropbtn">Ayuda</button>
-          <div class="dropdown-content">
-            <a href="#faq">Preguntas frecuentes</a>
-            <a href="#envios">Envíos y devoluciones</a>
-          </div>
-        </div>
-        <div class="dropdown">
-          <button class="dropbtn">Productos</button>
-          <div class="dropdown-content">
-            <a href="#marina">Colección Marina</a>
-            <a href="#floral">Colección Floral</a>
-            <a href="#cactus">Colección Cactus</a>
-            <a href="#halloween">Colección Halloween</a>
-            <a href="#navidad">Colección Navidad</a>
-            <a href="#pascua">Colección Pascua</a>
-            <a href="#eventos">Eventos</a>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
-  <main>
-    <section class="about">
-      <h1>Bienvenidos a Kefi Studio</h1>
-      <p>
-        En Kefi Studio creamos <b>velas artesanales</b> con amor y dedicación, inspiradas en la naturaleza y los momentos especiales. Nuestras velas están hechas a mano en Valencia, con materiales de alta calidad y aromas únicos para llenar tu hogar de luz y emociones.
+      <h2>Velas Artesanales</h2>
+      <p style="max-width:420px;text-align:center;">
+        Descubre la magia de las velas hechas a mano en tonos pastel, aromas únicos y diseños inspirados en la naturaleza y los momentos especiales.
       </p>
-      <p>
-        Descubre nuestras colecciones temáticas y encuentra la vela perfecta para regalar, decorar o disfrutar en cualquier ocasión.
+      <button class="comprar-btn" onclick="abrirModal()">Ver catálogo</button>
+    </div>
+    <!-- Sobre nosotros -->
+    <div class="section" id="section1">
+      <div class="about">
+        <h2>Sobre nosotros</h2>
+        <p>
+          En Kefi Studio creamos <b>velas artesanales</b> con amor y dedicación, inspiradas en la naturaleza y los momentos especiales. Nuestras velas están hechas a mano en Valencia, con materiales de alta calidad y aromas únicos para llenar tu hogar de luz y emociones.
+        </p>
+        <p>
+          Descubre nuestras colecciones temáticas y encuentra la vela perfecta para regalar, decorar o disfrutar en cualquier ocasión.
+        </p>
+      </div>
+    </div>
+    <!-- Personalización -->
+    <div class="section" id="section2">
+      <h2>Personaliza tu vela</h2>
+      <form class="personalizacion-form" onsubmit="enviarPersonalizacion(event)">
+        <label for="tipo">Tipo de vela</label>
+        <select id="tipo" required>
+          <option>Estrella</option>
+          <option>Caracola</option>
+          <option>Concha yeso</option>
+          <option>Concha</option>
+          <option>Tarro y flor</option>
+          <option>Flor Rosa</option>
+          <option>Bouquet flores</option>
+          <option>Vaso cristal y margarita</option>
+          <option>Tulipán</option>
+          <option>Mini cactus</option>
+          <option>Conjunto cactus</option>
+        </select>
+        <label for="aroma">Aroma</label>
+        <select id="aroma" required>
+          <option>Jazmín</option>
+          <option>Citronella</option>
+          <option>Tropical</option>
+          <option>Bergamota</option>
+          <option>Coco</option>
+          <option>Almendra y vainilla</option>
+          <option>Azahar</option>
+          <option>Canela y naranja</option>
+          <option>Lavanda</option>
+          <option>Madera y tonka</option>
+          <option>Otro</option>
+        </select>
+        <label for="base">Base</label>
+        <select id="base" required>
+          <option>Soja</option>
+          <option>Parafina</option>
+          <option>Cera de abeja</option>
+        </select>
+        <label for="nombre">Tu nombre</label>
+        <input type="text" id="nombre" required>
+        <label for="contacto">Email o WhatsApp</label>
+        <input type="text" id="contacto" required>
+        <button type="submit" class="comprar-btn">Enviar pedido personalizado</button>
+      </form>
+      <p style="margin-top:14px;max-width:400px;text-align:center;">
+        Recibirás respuesta en menos de 24h para concretar detalles y pago.
       </p>
-    </section>
-
-    <!-- Colección Marina -->
-    <section id="marina">
-      <h2>Colección Marina</h2>
-      <div class="productos">
-        <div class="producto">
-          <img src="URL_FOTO_ESTRELLA" alt="Vela Estrella">
-          <h3>Estrella</h3>
-          <p>Vela en forma de estrella marina, aroma a jazmín. Ideal para ambientes relajantes.</p>
-          <div class="precio">12,00 €</div>
-          <button class="comprar-btn" onclick="window.location.href='https://tu-tienda.com/estrella'">Comprar</button>
-        </div>
-        <div class="producto">
-          <img src="URL_FOTO_CARACOLA" alt="Vela Caracola">
-          <h3>Caracola</h3>
-          <p>Inspirada en el mar, con fragancia tropical y diseño elegante.</p>
-          <div class="precio">13,00 €</div>
-          <button class="comprar-btn" onclick="window.location.href='https://tu-tienda.com/caracola'">Comprar</button>
-        </div>
-        <div class="producto">
-          <img src="URL_FOTO_CONCHA" alt="Concha yeso">
-          <h3>Concha yeso</h3>
-          <p>Decorativa y delicada, perfecta para centros de mesa. Aroma a coco.</p>
-          <div class="precio">11,00 €</div>
-          <button class="comprar-btn" onclick="window.location.href='https://tu-tienda.com/concha-yeso'">Comprar</button>
-        </div>
-        <div class="producto">
-          <img src="URL_FOTO_CONCHA" alt="Concha">
-          <h3>Concha</h3>
-          <p>Vela con forma de concha marina, aroma a citronella. Protege y decora.</p>
-          <div class="precio">12,50 €</div>
-          <button class="comprar-btn" onclick="window.location.href='https://tu-tienda.com/concha'">Comprar</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Colección Floral -->
-    <section id="floral">
-      <h2>Colección Floral</h2>
-      <div class="productos">
-        <div class="producto">
-          <img src="URL_FOTO_TARRO" alt="Tarro y flor">
-          <h3>Tarro y flor</h3>
-          <p>Tarro de cristal con vela floral, aroma a azahar y decoración de flor seca.</p>
-          <div class="precio">14,00 €</div>
-          <button class="comprar-btn" onclick="window.location.href='https://tu-tienda.com/tarro-flor'">Comprar</button>
-        </div>
-        <div class="producto">
-          <img src="URL_FOTO_FLOR_GRANDE" alt="Flor Rosa">
-          <h3>Flor Rosa</h3>
-          <p>Vela en forma de rosa, fragancia de almendra y vainilla.</p>
-          <div class="precio">13,50 €</div>
-          <button class="comprar-btn" onclick="window.location.href='https://tu-tienda.com/flor-rosa'">Comprar</button>
-        </div>
-        <div class="producto">
-          <img src="URL_FOTO_BOUQUET" alt="Bouquet flores">
-          <h3>Bouquet flores</h3>
-          <p>Conjunto de pequeñas velas florales, aromas variados (jazmín, lavanda, tropical).</p>
-          <div class="precio">15,00 €</div>
-          <button class="comprar-btn" onclick="window.location.href='https://tu-tienda.com/bouquet'">Comprar</button>
-        </div>
-        <div class="producto">
-          <img src="URL_FOTO_VASO_CRISTAL" alt="Vaso cristal y margarita">
-          <h3>Vaso cristal y margarita</h3>
-          <p>Vela en vaso de cristal decorada con margarita blanca y amarilla, aroma a bergamota.</p>
-          <div class="precio">12,00 €</div>
-          <button class="comprar-btn" onclick="window.location.href='https://tu-tienda.com/vaso-margarita'">Comprar</button>
-        </div>
-        <div class="producto">
-          <img src="URL_FOTO_TULIPAN" alt="Tulipán">
-          <h3>Tulipán</h3>
-          <p>Vela en forma de tulipán, aroma a lavanda y acabado pastel.</p>
-          <div class="precio">13,00 €</div>
-          <button class="comprar-btn" onclick="window.location.href='https://tu-tienda.com/tulipan'">Comprar</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Colección Cactus -->
-    <section id="cactus">
-      <h2>Colección Cactus</h2>
-      <div class="productos">
-        <div class="producto">
-          <img src="URL_FOTO_MINI_CACTUS" alt="Mini cactus">
-          <h3>Mini cactus</h3>
-          <p>Mini vela cactus, perfecta para detalles y regalos. Aroma a madera y tonka.</p>
-          <div class="precio">10,00 €</div>
-          <button class="comprar-btn" onclick="window.location.href='https://tu-tienda.com/mini-cactus'">Comprar</button>
-        </div>
-        <div class="producto">
-          <img src="URL_FOTO_CONJUNTO_CACTUS" alt="Conjunto cactus">
-          <h3>Conjunto cactus</h3>
-          <p>Set de 3 velas cactus, aromas variados. Ideal para decoración.</p>
-          <div class="precio">15,00 €</div>
-          <button class="comprar-btn" onclick="window.location.href='https://tu-tienda.com/conjunto-cactus'">Comprar</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Resto de colecciones (Halloween, Navidad, Pascua, Eventos) puedes replicar la estructura anterior cambiando nombres, descripciones, precios e imágenes -->
-
-    <!-- Ejemplo de sección de contacto -->
-    <section id="contacto">
+    </div>
+    <!-- Contacto -->
+    <div class="section" id="section3">
       <h2>Contacto</h2>
-      <p>¿Tienes dudas, quieres un pedido personalizado o necesitas ayuda? Escríbenos a <a href="mailto:kefistudio@ejemplo.com">kefistudio@ejemplo.com</a> o utiliza el formulario:</p>
-      <form>
+      <p>¿Tienes dudas, quieres un pedido personalizado o necesitas ayuda? Escríbenos a <a href="mailto:kefistudio@ejemplo.com">kefistudio@ejemplo.com</a> o utiliza el formulario de personalización.</p>
+      <form style="max-width:420px;margin:0 auto;">
         <input type="text" placeholder="Tu nombre" required style="width: 48%; padding: 8px; margin: 6px 0; border-radius: 6px; border: 1px solid #e3d6f7;">
         <input type="email" placeholder="Tu email" required style="width: 48%; padding: 8px; margin: 6px 0; border-radius: 6px; border: 1px solid #e3d6f7;">
         <textarea placeholder="Tu mensaje" required style="width: 100%; padding: 8px; margin: 6px 0; border-radius: 6px; border: 1px solid #e3d6f7;"></textarea>
         <button type="submit" class="comprar-btn">Enviar</button>
       </form>
-    </section>
-  </main>
+    </div>
+  </div>
+
+  <!-- fullPage.js y scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/4.0.20/fullpage.min.js"></script>
+  <script>
+    new fullpage('#fullpage', {
+      autoScrolling: true,
+      navigation: true,
+      navigationPosition: 'right',
+      anchors: ['inicio', 'sobre', 'personaliza', 'contacto'],
+      responsiveWidth: 700
+    });
+
+    // Modal productos
+    function abrirModal() {
+      document.getElementById('productosModal').style.display = 'flex';
+    }
+    document.getElementById('closeModal').onclick = function() {
+      document.getElementById('productosModal').style.display = 'none';
+    };
+    window.onclick = function(event) {
+      if (event.target == document.getElementById('productosModal')) {
+        document.getElementById('productosModal').style.display = 'none';
+      }
+    };
+
+    // Personalización: ejemplo de envío (puedes adaptarlo a tu backend, WhatsApp, etc.)
+    function enviarPersonalizacion(e) {
+      e.preventDefault();
+      const tipo = document.getElementById('tipo').value;
+      const aroma = document.getElementById('aroma').value;
+      const base = document.getElementById('base').value;
+      const nombre = document.getElementById('nombre').value;
+      const contacto = document.getElementById('contacto').value;
+      alert(
+        `¡Gracias, ${nombre}! Tu pedido:\nVela: ${tipo}\nAroma: ${aroma}\nBase: ${base}\n\nNos pondremos en contacto contigo en ${contacto}.`
+      );
+      // Aquí puedes enviar los datos a tu email, WhatsApp o backend
+      e.target.reset();
+    }
+  </script>
 </body>
 </html>
