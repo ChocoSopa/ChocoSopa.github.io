@@ -1,0 +1,49 @@
+import React, { useState } from "react";
+
+const aromas = [
+  "Jazmín", "Citronella", "Tropical", "Bergamota", "Coco", "Almendra y vainilla",
+  "Azahar", "Canela y naranja", "Lavanda", "Madera y tonka", "Otro"
+];
+
+const bases = ["Soja", "Parafina", "Cera de abeja"];
+
+function Customizer() {
+  const [form, setForm] = useState({ tipo: "", aroma: "", base: "", nombre: "", contacto: "" });
+  const [msg, setMsg] = useState("");
+
+  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    setMsg("¡Pedido recibido! Te contactaremos pronto.");
+    setForm({ tipo: "", aroma: "", base: "", nombre: "", contacto: "" });
+  };
+
+  return (
+    <section id="customizer" className="customizer-section">
+      <h2>Personaliza tu vela</h2>
+      <form onSubmit={handleSubmit} className="customizer-form">
+        <label>Tipo de vela</label>
+        <input name="tipo" value={form.tipo} onChange={handleChange} required />
+        <label>Aroma</label>
+        <select name="aroma" value={form.aroma} onChange={handleChange} required>
+          <option value="">Elige aroma</option>
+          {aromas.map(a => <option key={a}>{a}</option>)}
+        </select>
+        <label>Base</label>
+        <select name="base" value={form.base} onChange={handleChange} required>
+          <option value="">Elige base</option>
+          {bases.map(b => <option key={b}>{b}</option>)}
+        </select>
+        <label>Tu nombre</label>
+        <input name="nombre" value={form.nombre} onChange={handleChange} required />
+        <label>Email o WhatsApp</label>
+        <input name="contacto" value={form.contacto} onChange={handleChange} required />
+        <button type="submit" className="main-btn">Enviar pedido personalizado</button>
+      </form>
+      {msg && <p className="success-msg">{msg}</p>}
+    </section>
+  );
+}
+
+export default Customizer;

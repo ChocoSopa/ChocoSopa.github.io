@@ -1,0 +1,193 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg, #f8e1f4 0%, #e3d6f7 100%);
+  color: #7d4b94;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f6cce9;
+  padding: 16px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.logo {
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 2em;
+  color: #b67fe2;
+  letter-spacing: 2px;
+}
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+.navbar a {
+  color: #7d4b94;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1em;
+  transition: color 0.2s;
+}
+.navbar a:hover {
+  color: #b67fe2;
+}
+.hero-section {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 60px;
+}
+.fancy-title {
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 3.2em;
+  color: #b67fe2;
+  text-shadow: 2px 2px 8px #f8e1f4;
+}
+.main-btn {
+  background: linear-gradient(90deg, #e3d6f7 0%, #f8e1f4 100%);
+  color: #7d4b94;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 28px;
+  font-size: 1.1em;
+  cursor: pointer;
+  margin-top: 24px;
+  transition: background 0.2s;
+}
+.main-btn:hover {
+  background: #b67fe2;
+  color: #fff;
+}
+.products-section, .customizer-section, .contact-section {
+  padding: 60px 0 40px 0;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.collections-list {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.collection-card button {
+  background: #f8e1f4;
+  border: none;
+  border-radius: 8px;
+  padding: 18px 34px;
+  font-size: 1.1em;
+  color: #7d4b94;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(183,127,226,0.06);
+}
+.collection-card button:hover {
+  background: #b67fe2;
+  color: #fff;
+}
+.products-modal {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(200,170,220,0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+.close-btn {
+  position: absolute; top: 18px; right: 30px;
+  font-size: 2em; color: #b67fe2;
+  background: none; border: none;
+  cursor: pointer;
+}
+.products-list {
+  display: flex; flex-wrap: wrap; gap: 24px;
+  justify-content: center;
+  margin-top: 18px;
+}
+.product-card {
+  background: #f6cce9;
+  border-radius: 12px;
+  width: 220px;
+  padding: 14px 10px;
+  box-shadow: 0 1px 6px rgba(183,127,226,0.07);
+  text-align: center;
+}
+.product-card img {
+  width: 90px; height: 90px; object-fit: cover;
+  border-radius: 8px; background: #fff;
+  margin-bottom: 8px; border: 2px solid #e3d6f7;
+}
+.product-info h4 {
+  margin: 0;
+  color: #b67fe2;
+}
+.price {
+  color: #b67fe2;
+  font-weight: bold;
+  font-size: 1.05em;
+  margin-bottom: 5px;
+  display: block;
+}
+.buy-btn {
+  background: linear-gradient(90deg, #e3d6f7 0%, #f8e1f4 100%);
+  color: #7d4b94;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 1em;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: background 0.2s;
+}
+.buy-btn:hover {
+  background: #b67fe2;
+  color: #fff;
+}
+.customizer-form, .contact-form {
+  background: #f8e1f4;
+  border-radius: 12px;
+  padding: 28px 22px;
+  box-shadow: 0 1px 6px rgba(183,127,226,0.07);
+  max-width: 440px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+input, select, textarea {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #e3d6f7;
+  font-size: 1em;
+}
+.success-msg {
+  color: #7d4b94;
+  margin-top: 14px;
+  font-weight: bold;
+}
+.footer {
+  background: #f6cce9;
+  text-align: center;
+  padding: 18px 0;
+  margin-top: 36px;
+  color: #7d4b94;
+  font-size: 1em;
+}
+@media (max-width: 700px) {
+  .navbar { flex-direction: column; gap: 8px; padding: 12px 0; }
+  .collections-list { flex-direction: column; }
+  .products-list { flex-direction: column; }
+  .customizer-form, .contact-form { padding: 14px 6px; }
+}
