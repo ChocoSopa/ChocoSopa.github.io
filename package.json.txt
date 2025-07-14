@@ -1,5 +1,0 @@
-"homepage": "https://chocosopa.github.io/ChocoSopa.github.io",
-"scripts": {
-  "predeploy": "npm run build",
-  "deploy": "gh-pages -d build"
-}
